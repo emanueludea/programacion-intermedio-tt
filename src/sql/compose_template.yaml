@@ -1,6 +1,0 @@
-name: backend
-services:
-  db: 
-    build: db
-    environment:
-      - POSTGRES_PASSWORD=
