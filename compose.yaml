@@ -1,4 +1,8 @@
 # Use postgres/example user/password credentials
+# docker compose  up -d 
+# docker build -t my-image .
+# docker run --name my-app -e DB_PASSWORD=example \
+#  -e DB_HOST=192.168.33.11 -e DB_PORT=5433 my-image
 
 services:
 
@@ -7,6 +11,8 @@ services:
     restart: always
     # set shared memory limit when using docker compose
     shm_size: 128mb
+    volumes:
+      - ./resources/:/docker-entrypoint-initdb.d/
     # or set shared memory limit when deploy via swarm stack
     #volumes:
     #  - type: tmpfs
