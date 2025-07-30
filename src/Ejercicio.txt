@@ -1,0 +1,27 @@
+Hacer un programa que reciba las coordenadas de N puntos y:
+- Indique cuáles son los 2 puntos mas cercanos 
+  y la fórmulas de la rectas que pasa por ellos (m1*x+b1)
+- Indique cuáles son los 2 puntos más lejanos
+  y la fórmulas de la rectas que pasa por ellos (m2*x+b2)
+Evite cacular la distancia entre puntos iguales
+- Para cada una de ellas, encuentra un punto que esté 
+  entre 0.3 y 2 unidades de distancia, o indique no existe uno.
+
+  m2*m1 = -1
+  m1*x+b1 = m2*x +b2
+
+
+
+
+
+
+
+
+Hacer un programa que gestione las notas de un colegio.
+Hay N cursos
+Cada curso tiene M estudiantes
+Permitirá:
+    - calcular la nota promedio de un estudiante
+    - calcular la nota promedio de un curso
+    - calcular la cantidad de estuantes que ganaron/perdieron en cada curso
+Las notas se le piden al usuario
