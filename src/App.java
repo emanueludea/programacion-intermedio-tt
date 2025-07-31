@@ -31,7 +31,7 @@ public class App {
             ResultSet rs = st.executeQuery("SELECT * FROM alumno LIMIT 10");
             while (rs.next()) {
                 System.out.print("Column 1 returned ");
-                System.out.println(rs.getString(1));
+                System.out.println(rs.getString("primer_nombre"));
             }
             rs.close();
             st.close();
