@@ -26,12 +26,14 @@ public class App {
         Connection connection;
         try {
             connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-
+            final String nombre = "Carlos'; DROP TABLE alumno; --";
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM alumno LIMIT 10");
+            ResultSet rs = st.executeQuery("SELECT * FROM alumno WHERE primer_nombre = '" + nombre +
+                    "' LIMIT 10");
             while (rs.next()) {
                 System.out.print("Column 1 returned ");
                 System.out.println(rs.getString("primer_nombre"));
+                System.out.println(rs.getString(2));
             }
             rs.close();
             st.close();
