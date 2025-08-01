@@ -1,5 +1,7 @@
 package co.edu.udea.talentotech.programacion.intermedio.api_rest.dto;
 
+import co.edu.udea.talentotech.programacion.intermedio.api_rest.entities.Alumno;
+
 public class AlumnoDTO {
     private Integer cedula;
     private String primerNombre;
@@ -15,6 +17,16 @@ public class AlumnoDTO {
         this.cedula = cedula;
         this.primerNombre = primerNombre;
         this.primerApellido = primerApellido;
+    }
+
+    public AlumnoDTO(Alumno alumno) {
+        this.cedula = alumno.getCedula();
+        this.primerNombre = alumno.getPrimerNombre();
+        this.segundoNombre = alumno.getSegundoNombre();
+        this.primerApellido = alumno.getPrimerApellido();
+        this.segundoApellido = alumno.getSegundoApellido();
+        this.edad = alumno.getEdad();
+        this.semestre = alumno.getSemestre();
     }
 
     // Getters and Setters

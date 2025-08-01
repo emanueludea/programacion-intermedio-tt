@@ -25,7 +25,8 @@ public class AlumnoController {
     private AlumnoService alumnoService;
 
     @GetMapping("/alumnos")
-    public List<AlumnoDTO> getAlumnos(@RequestParam String param) {
+    public List<AlumnoDTO> getAlumnos(@RequestParam(required = false) String param) {
+        // Hacer validaciones de la peticion HTTP
         return alumnoService.findAll();
     }
     
@@ -43,8 +44,8 @@ public class AlumnoController {
         return entity;
     }
 
-    @DeleteMapping("path/{id}")
-    public void deleteMethodName(@PathVariable String id) {
-        //TODO: process DELETE request
+    @DeleteMapping("/alumnos/{id}")
+    public void deleteMethodName(@PathVariable Integer id) {
+        alumnoService.delete(id);
     }
 }

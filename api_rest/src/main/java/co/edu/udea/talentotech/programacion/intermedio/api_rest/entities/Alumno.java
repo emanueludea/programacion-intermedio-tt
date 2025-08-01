@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 // import jakarta.validation.constraints.NotNull;
 // import jakarta.validation.constraints.Size;
 // import java.util.Set;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "alumno")
@@ -16,11 +17,11 @@ public class Alumno {
     private Integer cedula;
 
     // @NotBlank
-    // @Size(max = 30)
+    @Size(max = 30)
     @Column(name = "primer_nombre", nullable = false, length = 30)
     private String primerNombre;
 
-    // @Size(max = 30)
+    @Size(max = 30)
     @Column(name = "segundo_nombre", length = 30)
     private String segundoNombre;
 
