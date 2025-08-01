@@ -1,0 +1,37 @@
+###
+GET http://localhost:8080/greeting HTTP/1.1
+
+### Saludo personalizado
+GET http://localhost:8080/greeting?name=Emanuel HTTP/1.1
+
+### Listar todos los usuarios
+POST http://localhost:8080/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Usuario 3",
+  "email": "email@correo.com",
+  "age": 30
+}
+
+### Listar todos los usuarios
+GET http://localhost:8080/users HTTP/1.1
+
+### Usar parámetro de consulta para limitar cantidad de resultados
+GET http://localhost:8080/users?limit=2 HTTP/1.1
+
+
+### Modificar un usuario existente
+PUT http://localhost:8080/users/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Usuario actualizado",
+  "email": "coreo@actualizado.com",
+  "age": 21
+}
+
+### Eliminar un usuario existente
+DELETE http://localhost:8080/users/1 HTTP/1.1
+
+
