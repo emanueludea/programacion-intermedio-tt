@@ -30,13 +30,13 @@ public class AlumnoServiceImpl implements AlumnoService {
     }
 
     @Override
-    public AlumnoDTO update(int id, AlumnoDTO alumnoDTO) {
+    public AlumnoDTO update(Integer id, AlumnoDTO alumnoDTO) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Integer id) {
         alumnoRepository.deleteById(id);
     }
 
