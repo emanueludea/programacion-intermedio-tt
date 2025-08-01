@@ -1,6 +1,6 @@
 package co.edu.udea.talentotech.programacion.intermedio.api_rest.entities;
 
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -18,7 +18,7 @@ public class User {
     @Column(name ="id", nullable = false, unique = true)
     private int id;
 
-    @NotBlank
+    // @NotBlank
     @Size(max = 50)
     @Column(name = "name", nullable = false)
     private String name;
