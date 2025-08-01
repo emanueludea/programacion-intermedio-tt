@@ -1,8 +1,26 @@
-package co.edu.udea.talentotech.programacion.intermedio.api_rest;
+package co.edu.udea.talentotech.programacion.intermedio.api_rest.entities;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "users")
 public class User {
     private static int idCounter = 0;
+    
+    @Id
+    @Column(name ="id", nullable = false, unique = true)
     private int id;
+
+    @NotBlank
+    @Size(max = 50)
+    @Column(name = "name", nullable = false)
     private String name;
     private String email;
     private int age;
@@ -12,7 +30,7 @@ public class User {
     }
 
     public User(String name, String email, int age) {
-        super();
+        this.id = ++idCounter;
         this.name = name;
         this.email = email;
         this.age = age;
@@ -46,4 +64,8 @@ public class User {
         this.age = age;
     }
 
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", name=" + name + ", email=" + email + ", age=" + age + "]";
+    }   
 }

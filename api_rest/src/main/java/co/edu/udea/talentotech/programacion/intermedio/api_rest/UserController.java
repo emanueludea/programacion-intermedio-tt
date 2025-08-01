@@ -12,16 +12,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.udea.talentotech.programacion.intermedio.api_rest.dto.UserDTO;
+import co.edu.udea.talentotech.programacion.intermedio.api_rest.entities.User;
+
 @RestController
 public class UserController {
 
     private List<User> users = new ArrayList<>();
 
     @PostMapping("/users")
-    public User createUser(@RequestBody User entity) {
+    public UserDTO createUser(@RequestBody UserDTO entity) {
         System.out.println("Received entity: " + entity);
-        users.add(entity);
-        return entity;
+        User newUser = new User(
+                entity.getName(),
+                entity.getEmail(),
+                entity.getAge());
+        users.add(newUser);
+        System.out.println("Created user: " + newUser);
+        UserDTO newUserDTO = new UserDTO(newUser);
+        return newUserDTO;
     }
 
     @GetMapping("/users")
@@ -44,7 +53,7 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public User updateUser(@PathVariable int id, @RequestBody User entity) {
+    public UserDTO updateUser(@PathVariable int id, @RequestBody UserDTO entity) {
         System.out.println("Updating user with ID: " + id + " with entity: " + entity);
         if (id <= 0) {
             throw new IllegalArgumentException("ID must be positive");
@@ -55,14 +64,23 @@ public class UserController {
         if (users.isEmpty()) {
             throw new IllegalArgumentException("No users available to update");
         }
-        users.forEach(user -> {
-            if (user.getId() == id) {
-                user.setName(entity.getName());
-                user.setEmail(entity.getEmail());
-                user.setAge(entity.getAge());
-            }
-        });
-        return entity;
+        // users.forEach(user -> {
+        // if (user.getId() == id) {
+        // user.setName(entity.getName());
+        // user.setEmail(entity.getEmail());
+        // user.setAge(entity.getAge());
+        // }
+        // });
+        // return entity;
+
+        User reUset = users.stream()
+                .filter(user -> user.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + id));
+        reUset.setName(entity.getName());
+        reUset.setEmail(entity.getEmail());
+        reUset.setAge(entity.getAge());
+        return new UserDTO(reUset);
     }
 
     @DeleteMapping("/users/{id}")

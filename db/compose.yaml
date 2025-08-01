@@ -13,6 +13,7 @@ services:
     shm_size: 128mb
     volumes:
       - ./resources/:/docker-entrypoint-initdb.d/
+      - data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: example
       DB_USER: app_user
@@ -45,3 +46,5 @@ services:
       - DB_NAME=appdb
       - DB_PASSWORD=myapppwd
       - DB_USER=app_user
+volumes:
+  data:
