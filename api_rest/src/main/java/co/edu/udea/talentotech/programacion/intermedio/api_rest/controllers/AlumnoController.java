@@ -3,12 +3,15 @@ package co.edu.udea.talentotech.programacion.intermedio.api_rest.controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.dto.AlumnoDTO;
+import co.edu.udea.talentotech.programacion.intermedio.api_rest.dto.MateriaDTO;
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.services.AlumnoService;
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.services.impl.AlumnoServiceImpl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
 
 @RestController
 public class AlumnoController {
@@ -29,23 +31,39 @@ public class AlumnoController {
         // Hacer validaciones de la peticion HTTP
         return alumnoService.findAll();
     }
-    
-    @PostMapping("path")
-    public String postMethodName(@RequestBody String entity) {
-        //TODO: process POST request
-        
-        return entity;
-    }
-    
-    @PutMapping("path/{id}")
-    public String putMethodName(@PathVariable String id, @RequestBody String entity) {
-        //TODO: process PUT request
-        
-        return entity;
+
+    @GetMapping("/alumnos/{cedula}/materias")
+    public ResponseEntity<List<MateriaDTO>> getMateriasByAlumno(@PathVariable Integer cedula) {
+        return ResponseEntity.ok(alumnoService.findMateriasByAlumno(cedula));
     }
 
-    @DeleteMapping("/alumnos/{id}")
-    public void deleteMethodName(@PathVariable Integer id) {
-        alumnoService.delete(id);
+    @PostMapping("/alumnos")
+    public ResponseEntity<AlumnoDTO> createAlumno(@RequestBody AlumnoDTO alumnoDTO) {
+        AlumnoDTO createdAlumno = alumnoService.save(alumnoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdAlumno);
+    }
+
+    @PostMapping("/alumnos/{cedula}/materias/{codigoMateria}")
+    public ResponseEntity<Void> matricularMateria(@PathVariable Integer cedula, @PathVariable Short codigoMateria) {
+        alumnoService.enrollMateria(cedula, codigoMateria);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/alumnos/{cedula}")
+    public ResponseEntity<AlumnoDTO> updateAlumno(@PathVariable Integer cedula, @RequestBody AlumnoDTO alumnoDTO) {
+        AlumnoDTO updatedAlumno = alumnoService.update(cedula, alumnoDTO);
+        return ResponseEntity.ok(updatedAlumno);
+    }
+
+    @DeleteMapping("/alumnos/{cedula}")
+    public ResponseEntity<Void> deleteAlumno(@PathVariable Integer cedula) {
+        alumnoService.delete(cedula);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/alumnos/{cedula}/materias/{codigoMateria}")
+    public ResponseEntity<Void> eliminarMateria(@PathVariable Integer cedula, @PathVariable Short codigoMateria) {
+        alumnoService.unenrollMateria(cedula, codigoMateria);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

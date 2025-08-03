@@ -1,5 +1,7 @@
 package co.edu.udea.talentotech.programacion.intermedio.api_rest.entities;
 
+import java.util.Set;
+
 import jakarta.persistence.*;
 // import jakarta.validation.constraints.NotBlank;
 // import jakarta.validation.constraints.NotNull;
@@ -40,16 +42,13 @@ public class Alumno {
     @Column(name = "semestre")
     private Short semestre;
 
-    // @ManyToMany(mappedBy = "alumnos", fetch = FetchType.LAZY)
-    // private Set<Profesor> profesores;
-
-    // @ManyToMany(fetch = FetchType.LAZY)
-    // @JoinTable(
-    //     name = "alumno_materia",
-    //     joinColumns = @JoinColumn(name = "cc_alumno"),
-    //     inverseJoinColumns = @JoinColumn(name = "codigo_materia")
-    // )
-    // private Set<Materia> materias;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "alumno_materia",
+        joinColumns = @JoinColumn(name = "cc_alumno"),
+        inverseJoinColumns = @JoinColumn(name = "codigo_materia")
+    )
+    private Set<Materia> materias;
 
     // Constructors
     public Alumno() {}
@@ -117,21 +116,13 @@ public class Alumno {
         this.semestre = semestre;
     }
 
-    // public Set<Profesor> getProfesores() {
-    //     return profesores;
-    // }
+    public Set<Materia> getMaterias() {
+        return materias;
+    }
 
-    // public void setProfesores(Set<Profesor> profesores) {
-    //     this.profesores = profesores;
-    // }
-
-    // public Set<Materia> getMaterias() {
-    //     return materias;
-    // }
-
-    // public void setMaterias(Set<Materia> materias) {
-    //     this.materias = materias;
-    // }
+    public void setMaterias(Set<Materia> materias) {
+        this.materias = materias;
+    }
 
     @Override
     public String toString() {
