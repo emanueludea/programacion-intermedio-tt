@@ -1,4 +1,4 @@
-package co.edu.udea.talentotech.programacion.intermedio.api_rest;
+package co.edu.udea.talentotech.programacion.intermedio.api_rest.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
