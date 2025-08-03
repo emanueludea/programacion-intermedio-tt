@@ -42,4 +42,4 @@ DELETE http://localhost:8080/users/1 HTTP/1.1
 ### 
 GET {{BASE_URL}}/alumnos HTTP/1.1
 ###
-DELETE {{BASE_URL}}/alumnos/123456 HTTP/1.1
+DELETE {{BASE_URL}}/alumnos/987654 HTTP/1.1
