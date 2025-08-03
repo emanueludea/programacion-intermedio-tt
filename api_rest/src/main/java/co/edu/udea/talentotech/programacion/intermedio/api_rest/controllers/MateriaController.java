@@ -63,8 +63,8 @@ public class MateriaController {
         return ResponseEntity.ok(materias);
     }
 
-    @GetMapping("/buscar/credito/{credito}")
-    public ResponseEntity<List<MateriaDTO>> getMateriasByCredito(@PathVariable Short credito) {
+    @GetMapping("/buscar/credito")
+    public ResponseEntity<List<MateriaDTO>> getMateriasByCredito(@RequestParam Short credito) {
         List<MateriaDTO> materias = materiaService.findByCredito(credito);
         return ResponseEntity.ok(materias);
     }
@@ -74,4 +74,29 @@ public class MateriaController {
         List<MateriaDTO> materias = materiaService.findMateriasByAlumno(cedulaAlumno);
         return ResponseEntity.ok(materias);
     }
+
+    @PostMapping("/{codigoMateria}/matricular/{cedulaAlumno}")
+    public ResponseEntity<String> enrollAlumno(
+            @PathVariable Short codigoMateria, 
+            @PathVariable Integer cedulaAlumno) {
+        try {
+            materiaService.enrollAlumno(codigoMateria, cedulaAlumno);
+            return ResponseEntity.ok("Alumno matriculado exitosamente en la materia");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Error al matricular alumno: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{codigoMateria}/matricular/{cedulaAlumno}")
+    public ResponseEntity<String> unenrollAlumno(
+            @PathVariable Short codigoMateria, 
+            @PathVariable Integer cedulaAlumno) {
+        try {
+            materiaService.unenrollAlumno(codigoMateria, cedulaAlumno);
+            return ResponseEntity.ok("Alumno desmatriculado exitosamente de la materia");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Error al desmatricular alumno: " + e.getMessage());
+        }
+    }
+
 }

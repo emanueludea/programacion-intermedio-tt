@@ -92,4 +92,13 @@ public class MateriaServiceImpl implements MateriaService {
         materia.setCredito(dto.getCredito());
         return materia;
     }
+    @Override
+    public void enrollAlumno(Short codigoMateria, Integer cedulaAlumno) {
+        materiaRepository.enrollAlumno(codigoMateria, cedulaAlumno);       
+    }
+
+    @Override
+    public void unenrollAlumno(Short codigoMateria, Integer cedulaAlumno) {
+        materiaRepository.unenrollAlumno(codigoMateria, cedulaAlumno);
+    }
 }

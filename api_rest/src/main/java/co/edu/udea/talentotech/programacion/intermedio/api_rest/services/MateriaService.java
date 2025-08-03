@@ -23,4 +23,8 @@ public interface MateriaService {
     List<MateriaDTO> findByCredito(Short credito);
         
     List<MateriaDTO> findMateriasByAlumno(Integer cedulaAlumno);
+    
+    void enrollAlumno(Short codigoMateria, Integer cedulaAlumno);
+    
+    void unenrollAlumno(Short codigoMateria, Integer cedulaAlumno);
 }

@@ -1,5 +1,6 @@
 package co.edu.udea.talentotech.programacion.intermedio.api_rest.dto;
 
+import co.edu.udea.talentotech.programacion.intermedio.api_rest.entities.Materia;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -21,6 +22,12 @@ public class MateriaDTO {
     public MateriaDTO(String nombre, Short credito) {
         this.nombre = nombre;
         this.credito = credito;
+    }
+
+    public MateriaDTO(Materia materia) {
+        this.codigo = materia.getCodigo();
+        this.nombre = materia.getNombre();
+        this.credito = materia.getCredito();
     }
 
     // Getters and Setters
