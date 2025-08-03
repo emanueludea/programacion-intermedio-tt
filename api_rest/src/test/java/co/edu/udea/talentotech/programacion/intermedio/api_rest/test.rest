@@ -9,7 +9,7 @@ GET {{BASE_URL}}/greeting HTTP/1.1
 GET {{BASE_URL}}/greeting?name=Emanuel HTTP/1.1
 
 ### Listar todos los usuarios
-POST http://localhost:8080/users HTTP/1.1
+POST {{BASE_URL}}/users HTTP/1.1
 Content-Type: application/json
 
 {
@@ -19,14 +19,14 @@ Content-Type: application/json
 }
 
 ### Listar todos los usuarios
-GET http://localhost:8080/users HTTP/1.1
+GET {{BASE_URL}}/users HTTP/1.1
 
 ### Usar parámetro de consulta para limitar cantidad de resultados
-GET http://localhost:8080/users?limit=2&offset=2 HTTP/1.1
+GET {{BASE_URL}}/users?limit=2&offset=2 HTTP/1.1
 
 
 ### Modificar un usuario existente
-PUT http://localhost:8080/users/2 HTTP/1.1
+PUT {{BASE_URL}}/users/2 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -36,48 +36,78 @@ Content-Type: application/json
 }
 
 ### Eliminar un usuario existente
-DELETE http://localhost:8080/users/1 HTTP/1.1
+DELETE {{BASE_URL}}/users/1 HTTP/1.1
 
+### ============ ALUMNO ENDPOINTS ============
 
-### 
+### Listar todos los alumnos
 GET {{BASE_URL}}/alumnos HTTP/1.1
-###
+### Listar materias de un alumno específico
+GET {{BASE_URL}}/alumnos/123456/materias HTTP/1.1
+### Crear nuevo alumno
+POST {{BASE_URL}}/alumnos HTTP/1.1
+Content-Type: application/json  
+
+{
+  "cedula": 123456,
+  "nombre": "Juan Perez",
+  "email": "juan.perez@correo.com"
+}
+
+### Matricular un alumno en una materia
+POST {{BASE_URL}}/alumnos/123456/materias/2 HTTP/1.1
+
+### Actualizar un alumno existente
+PUT {{BASE_URL}}/alumnos/123456 HTTP/1.1
+Content-Type: application/json  
+
+{
+  "nombre": "Juan Perez Actualizado",
+  "email": "juan.perez@actualizado.com"
+}
+
+### Eliminar un alumno existente
 DELETE {{BASE_URL}}/alumnos/987654 HTTP/1.1
+### Eliminar un alumno de una materia
+DELETE {{BASE_URL}}/alumnos/123456/materias/2 HTTP/1.1
 
 ### ============ MATERIA ENDPOINTS ============
 
 ### Listar todas las materias
-GET {{BASE_URL}}/materias HTTP/1.1
+GET {{BASE_URL}}/api/materias HTTP/1.1
 
 ### Obtener materia por código
-GET {{BASE_URL}}/materias/1 HTTP/1.1
+GET {{BASE_URL}}/api/materias/1 HTTP/1.1
 
 ### Crear nueva materia
-POST {{BASE_URL}}/materias HTTP/1.1
+POST {{BASE_URL}}/api/materias HTTP/1.1
 Content-Type: application/json
 
 {
-  "nombre": "Programación Avanzada",
-  "credito": 4
+  "nombre": "Nueva Avanzada",
+  "credito": 3
 }
 
 ### Actualizar materia existente
-PUT {{BASE_URL}}/materias/1 HTTP/1.1
+PUT {{BASE_URL}}/api/materias/1 HTTP/1.1
 Content-Type: application/json
 
 {
-  "nombre": "Programación Intermedia Actualizada",
+  "nombre": "Programación Intermedia 2",
   "credito": 5
 }
 
 ### Eliminar materia por código
-DELETE {{BASE_URL}}/materias/1 HTTP/1.1
+DELETE {{BASE_URL}}/api/materias/1 HTTP/1.1
 
 ### Buscar materias por nombre (contiene texto)
-GET {{BASE_URL}}/materias/buscar/nombre?nombre=programacion HTTP/1.1
+GET {{BASE_URL}}/api/materias/buscar/nombre?nombre=programacion HTTP/1.1
 
 ### Buscar materias por créditos
-GET {{BASE_URL}}/materias/buscar/credito?credito=3 HTTP/1.1
+GET {{BASE_URL}}/api/materias/buscar/credito?credito=3 HTTP/1.1
 
 ### Buscar materias de un alumno específico
-GET {{BASE_URL}}/materias/alumno/123456789 HTTP/1.1
+GET {{BASE_URL}}/api/materias/alumno/123456 HTTP/1.1
+
+### Inscribir alumno en materia
+POST {{BASE_URL}}/api/materias/2/matricular/123456 HTTP/1.1
