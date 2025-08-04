@@ -17,51 +17,53 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
+@RequestMapping("/api/alumnos")
 public class AlumnoController {
 
     @Autowired
     private AlumnoService alumnoService;
 
-    @GetMapping("/alumnos")
+    @GetMapping
     public List<AlumnoDTO> getAlumnos(@RequestParam(required = false) String param) {
         // Hacer validaciones de la peticion HTTP
         return alumnoService.findAll();
     }
 
-    @GetMapping("/alumnos/{cedula}/materias")
+    @GetMapping("/{cedula}/materias")
     public ResponseEntity<List<MateriaDTO>> getMateriasByAlumno(@PathVariable Integer cedula) {
         return ResponseEntity.ok(alumnoService.findMateriasByAlumno(cedula));
     }
 
-    @PostMapping("/alumnos")
+    @PostMapping
     public ResponseEntity<AlumnoDTO> createAlumno(@RequestBody AlumnoDTO alumnoDTO) {
         AlumnoDTO createdAlumno = alumnoService.save(alumnoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAlumno);
     }
 
-    @PostMapping("/alumnos/{cedula}/materias/{codigoMateria}")
+    @PostMapping("/{cedula}/materias/{codigoMateria}")
     public ResponseEntity<Void> matricularMateria(@PathVariable Integer cedula, @PathVariable Short codigoMateria) {
         alumnoService.enrollMateria(cedula, codigoMateria);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/alumnos/{cedula}")
+    @PutMapping("/{cedula}")
     public ResponseEntity<AlumnoDTO> updateAlumno(@PathVariable Integer cedula, @RequestBody AlumnoDTO alumnoDTO) {
         AlumnoDTO updatedAlumno = alumnoService.update(cedula, alumnoDTO);
         return ResponseEntity.ok(updatedAlumno);
     }
 
-    @DeleteMapping("/alumnos/{cedula}")
+    @DeleteMapping("/{cedula}")
     public ResponseEntity<Void> deleteAlumno(@PathVariable Integer cedula) {
         alumnoService.delete(cedula);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/alumnos/{cedula}/materias/{codigoMateria}")
+    @DeleteMapping("/{cedula}/materias/{codigoMateria}")
     public ResponseEntity<Void> eliminarMateria(@PathVariable Integer cedula, @PathVariable Short codigoMateria) {
         alumnoService.unenrollMateria(cedula, codigoMateria);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
