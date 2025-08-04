@@ -2,8 +2,6 @@ package co.edu.udea.talentotech.programacion.intermedio.api_rest.entities;
 
 import jakarta.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

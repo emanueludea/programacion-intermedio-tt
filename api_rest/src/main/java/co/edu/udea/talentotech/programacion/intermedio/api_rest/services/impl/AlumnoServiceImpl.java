@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.dto.AlumnoDTO;
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.dto.MateriaDTO;
@@ -22,12 +23,14 @@ public class AlumnoServiceImpl implements AlumnoService {
     @Autowired
     private MateriaRepository materiaRepository;
 
+    @Transactional(readOnly = true)  //begin - commit en sql
     @Override
     public List<AlumnoDTO> findAll() {
         List<Alumno> all = (List<Alumno>) alumnoRepository.findAll();
         return all.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public AlumnoDTO save(AlumnoDTO alumnoDTO) {
         Alumno alumno = convertToEntity(alumnoDTO);
@@ -35,6 +38,7 @@ public class AlumnoServiceImpl implements AlumnoService {
         return convertToDTO(savedAlumno);
     }
 
+    @Transactional
     @Override
     public AlumnoDTO update(Integer id, AlumnoDTO alumnoDTO) {
         Alumno alumno = alumnoRepository.findById(id)
@@ -62,11 +66,13 @@ public class AlumnoServiceImpl implements AlumnoService {
         return convertToDTO(updatedAlumno);
     }
 
+    @Transactional
     @Override
     public void delete(Integer id) {
         alumnoRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public void enrollMateria(Integer cedulaAlumno, Short codigoMateria) {
         Alumno alumno = alumnoRepository.findById(cedulaAlumno)
@@ -77,6 +83,7 @@ public class AlumnoServiceImpl implements AlumnoService {
         alumnoRepository.save(alumno);
     }
 
+    @Transactional
     @Override
     public void unenrollMateria(Integer cedulaAlumno, Short codigoMateria) {
         Alumno alumno = alumnoRepository.findById(cedulaAlumno)
@@ -87,6 +94,7 @@ public class AlumnoServiceImpl implements AlumnoService {
         alumnoRepository.save(alumno);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<MateriaDTO> findMateriasByAlumno(Integer cedulaAlumno) {
         Alumno alumno = alumnoRepository.findById(cedulaAlumno)
