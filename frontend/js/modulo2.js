@@ -1,0 +1,10 @@
+"use strict";
+import { PI, f2 } from './modulo1.js';
+import Carro from './modulo3.js';
+console.log(PI);
+console.log(f2(5, 3));
+let c1 = new Carro("Toyota", "Rojo");
+c1.pitar();
+console.log(c1.marca);
+c1.marca = "Nueva marca del carro";
+console.log(c1.marca);
