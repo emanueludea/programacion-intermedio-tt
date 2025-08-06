@@ -7,16 +7,16 @@ services:
     volumes:
       - ./db/resources/:/docker-entrypoint-initdb.d/
       - data:/var/lib/postgresql/data
-    env_file:
-      - ./db/.env
-    # environment:
-    #   POSTGRES_PASSWORD: example123123
-    #   DB_USER: my_app_user
-    #   DB_PASSWORD: myapppwdasdfawre234234
-    #   POSTGRES_DB: appdb2
-    #   POSTGRES_USER: administrador
+    # env_file:
+    #   - ./db/.env
+    environment:
+      POSTGRES_PASSWORD: example123123
+      DB_USER: my_app_user
+      DB_PASSWORD: myapppwdasdfawre234234
+      POSTGRES_DB: appdb
+      POSTGRES_USER: administrador
     ports:
-      - 5433:5432
+      - 5432:5432
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U administrador"]
       interval: 5s
@@ -29,21 +29,21 @@ services:
     ports:
       - 8081:8080
   # docker compose build 
-  backend:
-    build:
-      context: ./api_rest
-      dockerfile: Dockerfile
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - 8080:8080
-    env_file:
-      - ./api_rest/.env
-    # environment:
-    #   - DB_HOST=db
-    #   - DB_NAME=appdb2
-    #   - DB_PASSWORD=myapppwdasdfawre234234
-    #   - DB_USER=my_app_user
+  # backend:
+  #   build:
+  #     context: ./api_rest
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   ports:
+  #     - 8080:8080
+  #   # env_file:
+  #   #   - ./api_rest/.env
+  #   environment:
+  #     - DB_HOST=db
+  #     - DB_NAME=appdb2
+  #     - DB_PASSWORD=myapppwdasdfawre234234
+  #     - DB_USER=my_app_user
 volumes:
   data:
