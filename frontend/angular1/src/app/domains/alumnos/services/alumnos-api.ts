@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Alumno } from './alumno';
+import { Alumno } from '../models/alumno';
 import { catchError, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MyService {
+export class AlumnosApi {
+  
   private http = inject(HttpClient);
   private readonly apiUrl = `http://localhost:8080/api/alumnos`;
  

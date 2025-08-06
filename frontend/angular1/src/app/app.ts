@@ -1,9 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Encabezado } from "./encabezado/encabezado";
-import { Formulario } from "./formulario/formulario";
-import { Listado } from "./listado/listado";
+import { Encabezado } from "./domains/alumnos/pages/encabezado/encabezado";
+import { Formulario } from "./domains/alumnos/pages/formulario/formulario";
 import { MyService } from './my-service';
+import { Listado } from './domains/alumnos/pages/listado/listado';
 
 @Component({
   selector: 'app-root',
@@ -27,5 +27,4 @@ export class App {
     });
   }
 
-  
 }
