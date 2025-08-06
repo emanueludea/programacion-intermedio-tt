@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { Alumno } from '../alumno';
+import { Alumno } from '../../models/alumno';
 
 @Component({
   selector: 'app-fila-alumno',
