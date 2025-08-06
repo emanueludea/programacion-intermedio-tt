@@ -21,7 +21,19 @@
             <tbody id="alumnos-tbody">
                 <!-- Los datos se cargarán dinámicamente -->
                 @for(alumno of alumnos(); track alumno.cedula) {
-                <app-fila-alumno [alumno]="alumno"></app-fila-alumno>
+                <tr>
+                    <td>{{ alumno?.cedula }}</td>
+                    <td>{{ alumno?.primerNombre }}</td>
+                    <td>{{ alumno?.segundoNombre }}</td>
+                    <td>{{ alumno?.primerApellido }}</td>
+                    <td>{{ alumno?.segundoApellido }}</td>
+                    <td>{{ alumno?.edad }}</td>
+                    <td>{{ alumno?.semestre }}</td>
+                    <td>
+                        <button class="edit-btn" (click)="editarAlumno(alumno)">Editar</button>
+                        <button class="delete-btn" (click)="eliminarAlumno(alumno)">Eliminar</button>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

@@ -7,5 +7,4 @@ import { Component } from '@angular/core';
   styleUrl: './formulario.css'
 })
 export class Formulario {
-
 }

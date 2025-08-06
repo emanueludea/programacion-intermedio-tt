@@ -26,4 +26,18 @@ export class Alumnos {
       console.log(this.alumnos());
     });
   }
+
+  eliminarAlumno(alumno: Alumno): void {
+    this.alumnoService.deleteAlumno(alumno.cedula).subscribe(() => {
+      this.alumnos.set(this.alumnos().filter(a => a.cedula !== alumno.cedula));
+      console.log(`Alumno con cédula ${alumno.cedula} eliminado.`);
+    });
+  }
+  editarAlumno(alumno: Alumno): void {
+    console.log(`Editar alumno con cédula ${alumno.cedula}`);
+    this.alumnoService.updateAlumno(alumno.cedula, alumno).subscribe(updatedAlumnos => {
+      this.alumnos.set(this.alumnos().map(a => a.cedula === updatedAlumnos.cedula ? updatedAlumnos : a));
+      console.log(`Alumno con cédula ${updatedAlumnos.cedula} actualizado.`);
+    });
+  }
 }
