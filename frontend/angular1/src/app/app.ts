@@ -1,15 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Encabezado } from "./domains/alumnos/pages/encabezado/encabezado";
+import { Alumnos } from "./domains/alumnos/pages/alumnos/alumnos";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Encabezado],
+  imports: [RouterOutlet, Alumnos],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
   protected readonly title = signal('angular1');
-  rutaImagen = "public/img1.png";
-
 }
