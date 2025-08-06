@@ -1,0 +1,44 @@
+<!-- Formulario para crear/editar alumno -->
+<section class="form-section">
+    <h2 id="form-title">Agregar Nuevo Alumno</h2>
+    <form id="alumno-form">
+        <div class="form-group">
+            <label for="cedula">Cédula:</label>
+            <input type="number" id="cedula" name="cedula" required>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="primerNombre">Primer Nombre:</label>
+                <input type="text" id="primerNombre" name="primerNombre" required>
+            </div>
+            <div class="form-group">
+                <label for="segundoNombre">Segundo Nombre:</label>
+                <input type="text" id="segundoNombre" name="segundoNombre">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="primerApellido">Primer Apellido:</label>
+                <input type="text" id="primerApellido" name="primerApellido" required>
+            </div>
+            <div class="form-group">
+                <label for="segundoApellido">Segundo Apellido:</label>
+                <input type="text" id="segundoApellido" name="segundoApellido">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="edad">Edad:</label>
+                <input type="number" id="edad" name="edad" min="15" max="100">
+            </div>
+            <div class="form-group">
+                <label for="semestre">Semestre:</label>
+                <input type="number" id="semestre" name="semestre" min="1" max="12">
+            </div>
+        </div>
+        <div class="form-buttons">
+            <button type="submit" id="submit-btn">Guardar</button>
+            <button type="button" id="cancel-btn" style="display: none;">Cancelar</button>
+        </div>
+    </form>
+</section>

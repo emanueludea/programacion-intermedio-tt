@@ -1,0 +1,13 @@
+<tr>
+    <td>{{ alumno()?.cedula }}</td>
+    <td>{{ alumno()?.primerNombre }}</td>
+    <td>{{ alumno()?.segundoNombre }}</td>
+    <td>{{ alumno()?.primerApellido }}</td>
+    <td>{{ alumno()?.segundoApellido }}</td>
+    <td>{{ alumno()?.edad }}</td>
+    <td>{{ alumno()?.semestre }}</td>
+    <td>
+        <button class="edit-btn" (click)="editarAlumno(alumno()?.cedula || -1)">Editar</button>
+        <button class="delete-btn" (click)="eliminarAlumno(alumno()?.cedula || -1)">Eliminar</button>
+    </td>
+</tr>

@@ -1,0 +1,32 @@
+<!-- Lista de alumnos -->
+<section class="list-section">
+    <h2>Lista de Alumnos</h2>
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Buscar por nombre, apellido o cédula...">
+    </div>
+    <div class="table-container">
+        <table id="alumnos-table">
+            <thead>
+                <tr>
+                    <th>Cédula</th>
+                    <th>Primer Nombre</th>
+                    <th>Segundo Nombre</th>
+                    <th>Primer Apellido</th>
+                    <th>Segundo Apellido</th>
+                    <th>Edad</th>
+                    <th>Semestre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="alumnos-tbody">
+                <!-- Los datos se cargarán dinámicamente -->
+                @for(alumno of alumnos; track alumno.cedula) {
+                <app-fila-alumno [alumno]="alumno"
+                    (salida1)="salida1Activa($event)"></app-fila-alumno>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div id="loading" style="display: none;">Cargando...</div>
+    <div id="no-data" style="display: none;">No hay alumnos registrados</div>
+</section>
