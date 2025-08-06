@@ -14,7 +14,7 @@ import { Alumno } from '../../models/alumno';
 export class Alumnos {
   private alumnoService = inject(AlumnosApi);
 
-  private alumnos = signal<Alumno[]>([]);
+  alumnos = signal<Alumno[]>([]);
   rutaImagen = "img1.png";
   ngOnInit(): void {
     this.loadAlumno();
