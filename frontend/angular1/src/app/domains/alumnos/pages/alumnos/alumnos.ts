@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AlumnosApi } from '../../services/alumnos-api';
 import { Encabezado } from "../encabezado/encabezado";
 import { Formulario } from "../formulario/formulario";
 import { Listado } from "../listado/listado";
+import { Alumno } from '../../models/alumno';
 
 @Component({
   selector: 'app-alumnos',
@@ -12,6 +13,8 @@ import { Listado } from "../listado/listado";
 })
 export class Alumnos {
   private alumnoService = inject(AlumnosApi);
+
+  private alumnos = signal<Alumno[]>([]);
   rutaImagen = "img1.png";
   ngOnInit(): void {
     this.loadAlumno();
@@ -19,7 +22,8 @@ export class Alumnos {
 
   private loadAlumno(): void {
     this.alumnoService.getAllAlumnos().subscribe(alumnos => {
-      console.log(alumnos);
+      this.alumnos.set(alumnos);
+      console.log(this.alumnos());
     });
   }
 }

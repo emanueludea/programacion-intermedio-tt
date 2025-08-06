@@ -20,9 +20,8 @@
             </thead>
             <tbody id="alumnos-tbody">
                 <!-- Los datos se cargarán dinámicamente -->
-                @for(alumno of alumnos; track alumno.cedula) {
-                <app-fila-alumno [alumno]="alumno"
-                    (salida1)="salida1Activa($event)"></app-fila-alumno>
+                @for(alumno of alumnos(); track alumno.cedula) {
+                <app-fila-alumno [alumno]="alumno"></app-fila-alumno>
                 }
             </tbody>
         </table>

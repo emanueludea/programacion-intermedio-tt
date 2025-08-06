@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { FilaAlumno } from "../fila-alumno/fila-alumno";
 import { Alumno } from '../../models/alumno';
 
@@ -9,9 +9,5 @@ import { Alumno } from '../../models/alumno';
   styleUrl: './listado.css'
 })
 export class Listado {
-  alumnos: Alumno[] = [];
-
-  salida1Activa(cedula: number){
-    console.log("Salida 1 activa: " + cedula);
-  }
+  alumnos = input<Alumno[]>([]);
 }
