@@ -1,5 +1,6 @@
 package co.edu.udea.talentotech.programacion.intermedio.api_rest.entities;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import jakarta.persistence.Column;
@@ -10,60 +11,52 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User {
-    private static int idCounter = 0;
-    
     @Id
-    @Column(name ="id", nullable = false, unique = true)
-    private int id;
-
-    // @NotBlank
+    @Column(name = "username", length = 50)
+    @NotNull
     @Size(max = 50)
-    @Column(name = "name", nullable = false)
-    private String name;
-    private String email;
-    private int age;
+    private String username;
+
+    @Column(name = "user_password", length = 255)
+    @NotNull
+    @Size(max = 255)
+    private String userPassword;
+
+    @Column(name = "isadmin")
+    @NotNull
+    private Boolean isAdmin = false;
 
     public User() {
-        this.id = ++idCounter;
     }
 
-    public User(String name, String email, int age) {
-        this.id = ++idCounter;
-        this.name = name;
-        this.email = email;
-        this.age = age;
+    public User(String username, String userPassword, Boolean isAdmin) {
+        this.username = username;
+        this.userPassword = userPassword;
+        this.isAdmin = isAdmin;
     }
 
-    public int getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public String getName() {
-        return name;
+    public String getUserPassword() {
+        return userPassword;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Boolean getIsAdmin() {
+        return isAdmin;
     }
 
-    public String getEmail() {
-        return email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
-    public int getAge() {
-        return age;
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", name=" + name + ", email=" + email + ", age=" + age + "]";
-    }   
 }
