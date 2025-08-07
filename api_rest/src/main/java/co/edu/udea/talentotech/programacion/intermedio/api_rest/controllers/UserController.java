@@ -1,6 +1,5 @@
 package co.edu.udea.talentotech.programacion.intermedio.api_rest.controllers;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
