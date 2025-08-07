@@ -14,7 +14,7 @@ Content-Type: application/json
 {
   "username": "nuevo_usuario",
   "userPassword": "password123",
-  "isAdmin": false
+  "isAdmin": true
 }
 ### Autenticar usuario
 POST {{BASE_URL}}/api/users/authenticate
@@ -29,7 +29,7 @@ Content-Type: application/json
 
 ### Listar todos los alumnos
 GET {{BASE_URL}}/api/alumnos HTTP/1.1
-Authorization: Bearer your_jwt_token_here
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc0FkbWluIjp0cnVlLCJzdWIiOiJudWV2b191c3VhcmlvIiwiaWF0IjoxNzU0NTk0MzA2LCJleHAiOjE3NTQ2ODA3MDZ9.3gICPw1-M4Ahz-ok5gQwSjzWxDs9WC4_4B3BhZfaH3A
 
 
 ### Listar materias de un alumno específico

@@ -1,6 +1,5 @@
 package co.edu.udea.talentotech.programacion.intermedio.api_rest.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.dto.UserDTO;
