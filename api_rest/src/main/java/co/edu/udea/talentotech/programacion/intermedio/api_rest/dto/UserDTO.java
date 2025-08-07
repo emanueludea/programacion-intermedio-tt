@@ -3,64 +3,62 @@ package co.edu.udea.talentotech.programacion.intermedio.api_rest.dto;
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.entities.User;
 
 public class UserDTO {
-    private Integer id;
-    private String name;
-    private String email;
-    private int age;
+    private String username;
+    private String userPassword;
+    private Boolean isAdmin;
 
     public UserDTO() {
     }
 
-    public UserDTO(String name, String email, int age) {
-        this.name = name;
-        this.email = email;
-        this.age = age;
+    public UserDTO(String username, String userPassword, Boolean isAdmin) {
+        this.username = username;
+        this.userPassword = userPassword;
+        this.isAdmin = isAdmin;
     }
 
-    public UserDTO(Integer id, String name, String email, int age) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.age = age;
+    // Constructor for response (without password)
+    public UserDTO(String username, Boolean isAdmin) {
+        this.username = username;
+        this.isAdmin = isAdmin;
     }
 
+    // Constructor from entity
     public UserDTO(User user) {
-        this.id = user.getId();
-        this.name = user.getName();
-        this.email = user.getEmail();
-        this.age = user.getAge();
+        this.username = user.getUsername();
+        this.isAdmin = user.getIsAdmin();
+        // Don't include password in DTO for security
     }
 
-    public Integer getId() {
-        return id;
+    // Getters and Setters
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getName() {
-        return name;
+    public String getUserPassword() {
+        return userPassword;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
-    public String getEmail() {
-        return email;
+    public Boolean getIsAdmin() {
+        return isAdmin;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
-    public int getAge() {
-        return age;
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "username='" + username + '\'' +
+                ", isAdmin=" + isAdmin +
+                '}';
     }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
 }
