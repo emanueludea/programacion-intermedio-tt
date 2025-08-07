@@ -4,12 +4,14 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.dto.UserDTO;
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.entities.User;
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.repositories.UserRepository;
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.services.UserService;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
