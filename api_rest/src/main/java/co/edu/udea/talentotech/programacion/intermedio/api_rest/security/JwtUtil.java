@@ -1,19 +1,19 @@
 package co.edu.udea.talentotech.programacion.intermedio.api_rest.security;
 
-import java.sql.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
-import javax.crypto.SecretKey;
-
-import org.springframework.beans.factory.annotation.Value;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+@Component
 public class JwtUtil {
 
     @Value("${jwt.secret:defaultSecretKeyForJWTTokenGenerationThatMustBeLongEnoughToBeSecure}")
@@ -31,7 +31,7 @@ public class JwtUtil {
     }
 
     public Date extractExpiration(String token) {
-        return (Date) extractClaim(token, Claims::getExpiration);
+        return extractClaim(token, Claims::getExpiration);
     }
 
     public Boolean extractIsAdmin(String token) {
@@ -83,5 +83,4 @@ public class JwtUtil {
             return false;
         }
     }
-
 }
