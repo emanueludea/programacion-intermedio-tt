@@ -1,8 +1,14 @@
 -- PostgreSQL 17 version
+BEGIN;
 -- DROP SCHEMA IF EXISTS universidad CASCADE;
 -- CREATE SCHEMA universidad;
 -- SET search_path TO universidad;
-
+CREATE TABLE Usuario (
+  username VARCHAR(50) NOT NULL,
+  user_password VARCHAR(255) NOT NULL,
+  isAdmin BOOLEAN NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (username)
+);
 -- Tabla de alumnos
 CREATE TABLE Alumno (
   primer_nombre VARCHAR(30) NOT NULL,
@@ -72,3 +78,4 @@ CREATE TABLE Alumno_Materia (
   CONSTRAINT FK_materia1 FOREIGN KEY (codigo_materia) REFERENCES Materia (codigo),
   PRIMARY KEY (cc_alumno, codigo_materia)
 );
+COMMIT;
