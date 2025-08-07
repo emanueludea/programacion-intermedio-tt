@@ -7,36 +7,23 @@ GET {{BASE_URL}}/greeting HTTP/1.1
 
 ### Saludo personalizado
 GET {{BASE_URL}}/greeting?name=Emanuel HTTP/1.1
-
-### Listar todos los usuarios
-POST {{BASE_URL}}/users HTTP/1.1
+### Crear un nuevo usuario
+POST {{BASE_URL}}/api/users
 Content-Type: application/json
 
 {
-  "name": "Usuario 3",
-  "email": "email@correo.com",
-  "age": 30
+  "username": "nuevo_usuario",
+  "userPassword": "password123",
+  "isAdmin": false
 }
-
-### Listar todos los usuarios
-GET {{BASE_URL}}/users HTTP/1.1
-
-### Usar parámetro de consulta para limitar cantidad de resultados
-GET {{BASE_URL}}/users?limit=2&offset=2 HTTP/1.1
-
-
-### Modificar un usuario existente
-PUT {{BASE_URL}}/users/2 HTTP/1.1
+### Autenticar usuario
+POST {{BASE_URL}}/api/users/authenticate
 Content-Type: application/json
 
 {
-  "name": "Usuario actualizado",
-  "email": "coreo@actualizado.com",
-  "age": 21
+  "username": "nuevo_usuario",
+  "password": "password123"
 }
-
-### Eliminar un usuario existente
-DELETE {{BASE_URL}}/users/1 HTTP/1.1
 
 ### ============ ALUMNO ENDPOINTS ============
 
