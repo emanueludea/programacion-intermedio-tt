@@ -1,18 +1,22 @@
 @SERVER=localhost
 @PORT=8080
 @BASE_URL=http://{{SERVER}}:{{PORT}}
+@ADMIN_TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJpc0FkbWluIjp0cnVlLCJzdWIiOiJudWV2b19hZG1pbiIsImlhdCI6MTc1NDYwNzU0NiwiZXhwIjoxNzU0NjExMTQ2fQ.fPKpaQwdHfCDDfXEFA7ptKK3osHkTRPxpKTs-2b5M8HTFXT8egqWBhsJOwAkuyiT_FztNH-t6PXXXrfjpJ3r4g
+@USER_TOKEN=eyJhbGciOiJIUzUxMiJ9.eyJpc0FkbWluIjpmYWxzZSwic3ViIjoibnVldm9fdXN1YXJpbyIsImlhdCI6MTc1NDYwNzQ3MywiZXhwIjoxNzU0NjExMDczfQ.r-eaQ_EITE8Pb_ew0pn8TeQJWtkM8Ucfbv3-XOJZB0T0Mbs7JY4q7L0UhGIjUNNvdbcJ-LajqB-kEhZtXS0clA
 
+### ============ ENDPOINTS SIN RESTRICCIONES ============
 ###
 GET {{BASE_URL}}/greeting HTTP/1.1
 
 ### Saludo personalizado
 GET {{BASE_URL}}/greeting?name=Emanuel HTTP/1.1
+
 ### Crear un nuevo usuario
 POST {{BASE_URL}}/api/users
 Content-Type: application/json
 
 {
-  "username": "nuevo_usuario",
+  "username": "nuevo_admin",
   "userPassword": "password123",
   "isAdmin": true
 }
@@ -21,22 +25,24 @@ POST {{BASE_URL}}/api/users/authenticate
 Content-Type: application/json
 
 {
-  "username": "nuevo_usuario",
+  "username": "nuevo_admin",
   "password": "password123"
 }
 
-### ============ ALUMNO ENDPOINTS ============
 
+### ============ ENDPOINTS USUARIOS ADMIN ============
+### ============ ALUMNO ENDPOINTS ============
 ### Listar todos los alumnos
 GET {{BASE_URL}}/api/alumnos HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc0FkbWluIjp0cnVlLCJzdWIiOiJudWV2b191c3VhcmlvIiwiaWF0IjoxNzU0NTk0MzA2LCJleHAiOjE3NTQ2ODA3MDZ9.3gICPw1-M4Ahz-ok5gQwSjzWxDs9WC4_4B3BhZfaH3A
-
+Authorization: Bearer {{ADMIN_TOKEN}}
 
 ### Listar materias de un alumno específico
-
 GET {{BASE_URL}}/api/alumnos/456789/materias HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
+
 ### Crear nuevo alumno
 POST {{BASE_URL}}/api/alumnos HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
 Content-Type: application/json
 
 {
@@ -47,9 +53,11 @@ Content-Type: application/json
 
 ### Matricular un alumno en una materia
 POST {{BASE_URL}}/api/alumnos/456789/materias/2 HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
 
 ### Actualizar un alumno existente
 PUT {{BASE_URL}}/api/alumnos/123456 HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
 Content-Type: application/json
 
 {
@@ -59,19 +67,27 @@ Content-Type: application/json
 
 ### Eliminar un alumno existente
 DELETE {{BASE_URL}}/api/alumnos/987654 HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
+
 ### Eliminar un alumno de una materia
 DELETE {{BASE_URL}}/api/alumnos/123456/materias/2 HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
 
+
+### ============ ENDPOINTS USUARIOS REGISTRADOS ============
 ### ============ MATERIA ENDPOINTS ============
 
 ### Listar todas las materias
 GET {{BASE_URL}}/api/materias HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
 
 ### Obtener materia por código
 GET {{BASE_URL}}/api/materias/1 HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
 
 ### Crear nueva materia
 POST {{BASE_URL}}/api/materias HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
 Content-Type: application/json
 
 {
@@ -81,6 +97,7 @@ Content-Type: application/json
 
 ### Actualizar materia existente
 PUT {{BASE_URL}}/api/materias/1 HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
 Content-Type: application/json
 
 {
@@ -90,15 +107,20 @@ Content-Type: application/json
 
 ### Eliminar materia por código
 DELETE {{BASE_URL}}/api/materias/1 HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
 
 ### Buscar materias por nombre (contiene texto)
 GET {{BASE_URL}}/api/materias/buscar/nombre?nombre=programacion HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
 
 ### Buscar materias por créditos
 GET {{BASE_URL}}/api/materias/buscar/credito?credito=3 HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
 
 ### Buscar materias de un alumno específico
 GET {{BASE_URL}}/api/materias/alumno/123456 HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
 
 ### Inscribir alumno en materia
 POST {{BASE_URL}}/api/materias/2/matricular/123456 HTTP/1.1
+Authorization: Bearer {{ADMIN_TOKEN}}
