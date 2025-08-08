@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.dto.AuthResponse;
+import co.edu.udea.talentotech.programacion.intermedio.api_rest.dto.AuthStatusResponse;
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.dto.LoginRequest;
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.dto.UserDTO;
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.security.JwtUtil;
 import co.edu.udea.talentotech.programacion.intermedio.api_rest.services.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/users")
@@ -31,7 +35,6 @@ public class UserController {
 
     @Autowired
     private JwtUtil jwtUtil;
-
 
     @GetMapping("/{username}")
     public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
@@ -100,29 +103,35 @@ public class UserController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthResponse> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthResponse> authenticateUser(@RequestBody LoginRequest loginRequest,
+            HttpServletResponse response) {
         try {
             if (loginRequest.getUsername() == null || loginRequest.getPassword() == null) {
                 return ResponseEntity.badRequest().build();
             }
 
             UserDTO authenticatedUser = userService.authenticateUser(
-                loginRequest.getUsername(), 
-                loginRequest.getPassword()
-            );
+                    loginRequest.getUsername(),
+                    loginRequest.getPassword());
 
             if (authenticatedUser != null) {
                 String token = jwtUtil.generateToken(
-                    authenticatedUser.getUsername(), 
-                    authenticatedUser.getIsAdmin()
-                );
-                
+                        authenticatedUser.getUsername(),
+                        authenticatedUser.getIsAdmin());
+
+                ResponseCookie cookie = ResponseCookie.from("jwt_token", token)
+                        .httpOnly(true)
+                        .secure(true) // Use secure cookies in production
+                        .path("/") // Cookie path
+                        .maxAge(86400) // 1 day
+                        .sameSite("Strict") // CSRF protection
+                        .build();
+
+                response.addHeader("Set-Cookie", cookie.toString());
                 AuthResponse authResponse = new AuthResponse(
-                    token, 
-                    authenticatedUser.getUsername(), 
-                    authenticatedUser.getIsAdmin()
-                );
-                
+                        authenticatedUser.getUsername(),
+                        authenticatedUser.getIsAdmin());
+
                 return ResponseEntity.ok(authResponse);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 401 Unauthorized
@@ -132,11 +141,39 @@ public class UserController {
         }
     }
 
+    @GetMapping("/auth-status")
+    public ResponseEntity<AuthStatusResponse> getAuthStatus(
+            @CookieValue(value = "jwt_token", required = false) String token) {
+        if (token != null && jwtUtil.validateToken(token)) {
+            Optional<UserDTO> user = userService.findByUsername(jwtUtil.extractUsername(token));
+            if (user.isPresent()) {
+                return ResponseEntity.ok(new AuthStatusResponse(true, user.get()));
+            }
+        }
+
+        return ResponseEntity.ok(new AuthStatusResponse(false, null));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        // Clear the cookie using Spring Boot's ResponseCookie
+        ResponseCookie cookie = ResponseCookie.from("jwt_token", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0) // Expire immediately
+                .sameSite("Strict")
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+
+        return ResponseEntity.ok().build();
+    }
     // Temporary endpoint to generate password hashes - REMOVE IN PRODUCTION
     // @GetMapping("/generate-hashes")
     // public ResponseEntity<String> generatePasswordHashes() {
-    //     userService.generatePasswordHashes();
-    //     return ResponseEntity.ok("Check console for password hashes");
+    // userService.generatePasswordHashes();
+    // return ResponseEntity.ok("Check console for password hashes");
     // }
 
 }
