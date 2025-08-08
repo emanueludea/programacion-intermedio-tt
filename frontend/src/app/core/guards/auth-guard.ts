@@ -1,22 +1,16 @@
+import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthClient } from '../services/auth-client';
-import { inject } from '@angular/core';
 
-export const adminGuardGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthClient);
   const router = inject(Router);
 
-  if (authService.isAuthenticated() && authService.isAdmin()) {
+  if (authService.isAuthenticated()) {
     return true;
   }
 
-  if (authService.isAuthenticated()) {
-    // User is authenticated but not admin
-    router.navigate(['/forbidden']);
-    return false;
-  }
-
-  // User is not authenticated
+  // Redirect to login with return url
   router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
   return false;
 };
