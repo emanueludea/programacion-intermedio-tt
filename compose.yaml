@@ -7,14 +7,14 @@ services:
     volumes:
       - ./db/resources/:/docker-entrypoint-initdb.d/
       - data:/var/lib/postgresql/data
-    # env_file:
-    #   - ./db/.env
-    environment:
-      POSTGRES_PASSWORD: postgres
-      DB_USER: postgres1
-      DB_PASSWORD: postgres
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
+    env_file:
+      - ./db/.env
+    # environment:
+    #   POSTGRES_PASSWORD: postgres
+    #   DB_USER: postgres1
+    #   DB_PASSWORD: postgres
+    #   POSTGRES_DB: postgres
+    #   POSTGRES_USER: postgres
     ports:
       - 5432:5432
     healthcheck:
@@ -28,7 +28,7 @@ services:
     restart: always
     ports:
       - 8081:8080
-  # docker compose build 
+      
   backend:
     build:
       context: ./api_rest
@@ -38,12 +38,14 @@ services:
         condition: service_healthy
     ports:
       - 8080:8080
-    # env_file:
-    #   - ./api_rest/.env
-    environment:
-      - DB_HOST=db
-      - DB_NAME=postgres
-      - DB_PASSWORD=postgres
-      - DB_USER=postgres
+    env_file:
+      - ./api_rest/.env
+    # environment:
+    #   DB_HOST: db
+    #   DB_NAM: postgres
+    #   DB_PASSWORD: postgres
+    #   DB_USER: postgres
+    #   JWT_SECRET: secret
+    #   JWT_EXPIRATION: 3600
 volumes:
   data:
