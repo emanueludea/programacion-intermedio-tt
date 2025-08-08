@@ -1,0 +1,49 @@
+<div class="dashboard-container">
+    <header class="dashboard-header">
+        <h1>Sistema de Gestión Universitaria</h1>
+        <div class="user-info">
+            <span>Bienvenido, {{ authService.currentUser()?.username }}!</span>
+            @if (authService.isAdmin()) {
+            <span class="admin-badge">Admin</span>
+            }
+            <button class="btn btn-outline" (click)="logout()">Cerrar sesión</button>
+        </div>
+    </header>
+
+    <nav class="dashboard-nav">
+        <div class="nav-links">
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                Inicio
+            </a>
+            <a routerLink="/cursos" routerLinkActive="active">
+                Cursos
+            </a>
+            @if (authService.isAdmin()) {
+            <a routerLink="/estudiantes" routerLinkActive="active">
+                Estudiantes
+            </a>
+            }
+        </div>
+    </nav>
+
+    <main class="dashboard-content">
+        <div class="welcome-section">
+            <h2>Inicio</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>Cursos</h3>
+                    <p>Gestionar cursos</p>
+                    <a routerLink="/courses" class="btn btn-primary">Ir a Cursos</a>
+                </div>
+
+                @if (authService.isAdmin()) {
+                <div class="card">
+                    <h3>Estudiantes</h3>
+                    <p>Gestionar información de estudiantes</p>
+                    <a routerLink="/alumnos" class="btn btn-primary">Gestionar Estudiantes</a>
+                </div>
+                }
+            </div>
+        </div>
+    </main>
+</div>
