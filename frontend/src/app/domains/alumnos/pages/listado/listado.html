@@ -26,15 +26,15 @@
             </thead>
             <tbody id="alumnos-tbody">
                 <!-- Los datos se cargarán dinámicamente -->
-                @for(alumno of alumnos(); track alumno.cedula) {
+                @for(alumno of alumnos$ | async; track alumno.cedula) {
                 <tr>
-                    <td>{{ alumno?.cedula }}</td>
-                    <td>{{ alumno?.primerNombre }}</td>
-                    <td>{{ alumno?.segundoNombre }}</td>
-                    <td>{{ alumno?.primerApellido }}</td>
-                    <td>{{ alumno?.segundoApellido }}</td>
-                    <td>{{ alumno?.edad }}</td>
-                    <td>{{ alumno?.semestre }}</td>
+                    <td><ngb-highlight [result]="alumno?.cedula?.toString()" [term]="filter.value" /></td>
+                    <td><ngb-highlight [result]="alumno?.primerNombre" [term]="filter.value" /></td>
+                    <td><ngb-highlight [result]="alumno?.segundoNombre" [term]="filter.value" /></td>
+                    <td><ngb-highlight [result]="alumno?.primerApellido" [term]="filter.value" /></td>
+                    <td><ngb-highlight [result]="alumno?.segundoApellido" [term]="filter.value" /></td>
+                    <td><ngb-highlight [result]="alumno?.edad?.toString()" [term]="filter.value" /></td>
+                    <td><ngb-highlight [result]="alumno?.semestre?.toString()" [term]="filter.value" /></td>
                     <td>
                         <button class="edit-btn" (click)="editarAlumno(alumno)">Editar</button>
                         <button class="delete-btn" (click)="eliminarAlumno(alumno)">Eliminar</button>
