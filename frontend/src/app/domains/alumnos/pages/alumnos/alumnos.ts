@@ -40,4 +40,19 @@ export class Alumnos {
       console.log(`Alumno con cédula ${updatedAlumnos.cedula} actualizado.`);
     });
   }
+  createAlumno(): void {
+    const alumno: Alumno = {
+      cedula: 12321276,
+      primerNombre: 'Juan',
+      segundoNombre: 'Pablo',
+      primerApellido: 'Doe',
+      segundoApellido: 'Smith',
+      edad: 20,
+      semestre: 3
+    };
+    this.alumnoService.createAlumno(alumno).subscribe(newAlumno => {
+      this.alumnos.set([...this.alumnos(), newAlumno]);
+      console.log(`Nuevo alumno creado con cédula ${newAlumno.cedula}.`);
+    });
+  }
 }
