@@ -21,7 +21,26 @@ export class AuthClient {
   public readonly isAuthenticated = computed(() => !!this.currentUserSignal());
   public readonly isAdmin = computed(() => this.currentUserSignal()?.isAdmin ?? false);
   public readonly isLoading = this.isLoadingSignal.asReadonly();
+  
+  constructor() {
+    this.initializeAuth();
+  }
 
+  private initializeAuth(): void {
+    const token = this.getToken();
+    if (token && !this.isTokenExpired(token)) {
+      // Decode token to get user info
+      const userInfo = this.decodeToken(token);
+      if (userInfo) {
+        this.currentUserSignal.set({
+          username: userInfo.username,
+          isAdmin: userInfo.isAdmin
+        });
+      }
+    } else {
+      this.logout();
+    }
+  }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
     this.isLoadingSignal.set(true);
