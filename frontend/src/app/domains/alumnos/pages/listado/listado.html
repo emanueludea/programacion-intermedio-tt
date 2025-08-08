@@ -1,11 +1,17 @@
 <!-- Lista de alumnos -->
 <section class="list-section">
     <h2>Lista de Alumnos</h2>
-    <div class="search-container">
-        <input type="text" id="search-input" placeholder="Buscar por nombre, apellido o cédula...">
-    </div>
+    <form>
+        <div class="mb-3 row">
+            <label for="search-input" class="col-xs-3 col-sm-auto col-form-label">Buscar:</label>
+            <div class="col-xs-3 col-sm-auto">
+                <input id="search-input" class="form-control" type="text"
+                    placeholder="Buscar por nombre, apellido o cédula..." [formControl]="filter" />
+            </div>
+        </div>
+    </form>
     <div class="table-container">
-        <table id="alumnos-table">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Cédula</th>
