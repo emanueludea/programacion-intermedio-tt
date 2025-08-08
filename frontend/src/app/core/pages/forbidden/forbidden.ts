@@ -15,7 +15,7 @@ import { RouterModule } from '@angular/router';
       </div>
     </div>
   `,
-  styleUrl: './forbidden.css'
+  styles: ''
 })
 export class Forbidden {
 

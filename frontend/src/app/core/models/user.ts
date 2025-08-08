@@ -16,7 +16,11 @@ export interface LoginRequest {
 }
 
 export interface AuthResponse {
-  token: string;
   username: string;
   isAdmin: boolean;
+}
+
+export interface AuthStatusResponse {
+  authenticated: boolean;
+  user?: User;
 }

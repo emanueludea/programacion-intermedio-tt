@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { AuthResponse, LoginRequest, User } from '../models/user';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { AuthResponse, AuthStatusResponse, LoginRequest, User } from '../models/user';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,30 +16,49 @@ export class AuthClient {
 
   private readonly currentUserSignal = signal<User | null>(null);
   private readonly isLoadingSignal = signal<boolean>(false);
+  private readonly isAuthenticatedSignal = signal<boolean>(false);
+
 
   public readonly currentUser = this.currentUserSignal.asReadonly();
   public readonly isAuthenticated = computed(() => !!this.currentUserSignal());
   public readonly isAdmin = computed(() => this.currentUserSignal()?.isAdmin ?? false);
   public readonly isLoading = this.isLoadingSignal.asReadonly();
-  
+
   constructor() {
     this.initializeAuth();
   }
 
   private initializeAuth(): void {
-    const token = this.getToken();
-    if (token && !this.isTokenExpired(token)) {
-      // Decode token to get user info
-      const userInfo = this.decodeToken(token);
-      if (userInfo) {
-        this.currentUserSignal.set({
-          username: userInfo.username,
-          isAdmin: userInfo.isAdmin
-        });
+    // Check authentication status with the server
+    this.checkAuthStatus().subscribe({
+      next: (isAuthenticated) => {
+        if (!isAuthenticated) {
+          this.currentUserSignal.set(null);
+          this.isAuthenticatedSignal.set(false);
+        }
+      },
+      error: () => {
+        this.currentUserSignal.set(null);
+        this.isAuthenticatedSignal.set(false);
       }
-    } else {
-      this.logout();
-    }
+    });
+  }
+
+  private checkAuthStatus(): Observable<boolean> {
+    return this.http.get<AuthStatusResponse>(`${this.apiUrl}/auth-status`, { withCredentials: true })
+      .pipe(
+        tap(response => {
+          this.isAuthenticatedSignal.set(response.authenticated);
+          if (response.authenticated && response.user) {
+            this.currentUserSignal.set(response.user);
+          }
+        }),
+        map(response => response.authenticated),
+        catchError(() => {
+          this.isAuthenticatedSignal.set(false);
+          return throwError(() => new Error('Auth check failed'));
+        })
+      );
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
@@ -48,11 +67,11 @@ export class AuthClient {
     return this.http.post<AuthResponse>(`${this.apiUrl}/authenticate`, credentials)
       .pipe(
         tap(response => {
-          this.setToken(response.token);
           this.currentUserSignal.set({
             username: response.username,
             isAdmin: response.isAdmin
           });
+          this.isAuthenticatedSignal.set(true);
         }),
         catchError(error => {
           this.isLoadingSignal.set(false);
@@ -65,7 +84,7 @@ export class AuthClient {
   register(user: User): Observable<User> {
     this.isLoadingSignal.set(true);
 
-    return this.http.post<User>(this.apiUrl, user)
+    return this.http.post<User>(this.apiUrl, user, { withCredentials: true })
       .pipe(
         catchError(error => {
           this.isLoadingSignal.set(false);
@@ -76,58 +95,30 @@ export class AuthClient {
   }
 
   logout(): void {
-    this.removeToken();
-    this.currentUserSignal.set(null);
-    this.router.navigate(['/login']);
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
-  }
-
-  private setToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
-  }
-
-  private removeToken(): void {
-    localStorage.removeItem(this.tokenKey);
-  }
-
-  private isTokenExpired(token: string): boolean {
-    try {
-      const payload = this.decodeToken(token);
-      if (!payload?.exp) return true;
-
-      const currentTime = Math.floor(Date.now() / 1000);
-      return payload.exp < currentTime;
-    } catch (error) {
-      return true;
-    }
-  }
-
-  private decodeToken(token: string): any {
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split('')
-          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-          .join('')
-      );
-      return JSON.parse(jsonPayload);
-    } catch (error) {
-      return null;
-    }
+    // Call server logout endpoint to clear the HttpOnly cookie
+    this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true })
+      .subscribe({
+        next: () => {
+          this.currentUserSignal.set(null);
+          this.isAuthenticatedSignal.set(false);
+          this.router.navigate(['/login']);
+        },
+        error: () => {
+          // Even if logout fails on server, clear local state
+          this.currentUserSignal.set(null);
+          this.isAuthenticatedSignal.set(false);
+          this.router.navigate(['/login']);
+        }
+      });
   }
 
   refreshUserData(): Observable<User> {
     const currentUser = this.currentUserSignal();
     if (!currentUser?.username) {
-      return throwError(() => new Error('No current user'));
+      return throwError(() => new Error('No hay usuario autenticado'));
     }
 
-    return this.http.get<User>(`${this.apiUrl}/${currentUser.username}`)
+    return this.http.get<User>(`${this.apiUrl}/${currentUser.username}`, { withCredentials: true })
       .pipe(
         tap(user => this.currentUserSignal.set(user)),
         catchError(error => {
