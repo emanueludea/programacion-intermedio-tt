@@ -65,7 +65,6 @@ docker-compose*.yml
 # ================================
 npm-debug.log*
 .nyc_output
-README.md
 *.md
 
 # Development files
