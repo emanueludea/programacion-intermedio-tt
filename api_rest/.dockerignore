@@ -1,0 +1,23 @@
+# .dockerignore
+target/
+!target/*.jar
+.git
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+*.md
+.env*
+logs/
+*.log
+.DS_Store
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+.metadata/
+bin/
