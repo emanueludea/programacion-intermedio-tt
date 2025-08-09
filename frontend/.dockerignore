@@ -59,3 +59,22 @@ docker-compose*.yml
 *.bak
 *.old
 *.tmp
+
+# ================================
+# Additional ignores for Docker
+# ================================
+npm-debug.log*
+.nyc_output
+README.md
+*.md
+
+# Development files
+src/**/*.spec.ts
+src/**/*.stories.ts
+e2e/
+karma.conf.js
+protractor.conf.js
+
+# Build artifacts that shouldn't be copied
+*.tgz
+*.tar.gz
