@@ -18,37 +18,36 @@ COPY src ./src
 RUN ./mvnw clean package -DskipTests
 
 # =========================================
-# Production stage
+# Production stage with numeric user
 # =========================================
 FROM alpine/java:21-jre
 
-# Create a non-root user and group
-RUN addgroup -g 1001 -S appgroup && \
-    adduser -u 1001 -S appuser -G appgroup
+# Create non-root user with specific UID/GID
+RUN addgroup -g 1001 appgroup && \
+    adduser -u 1001 -G appgroup -s /bin/sh -D appuser
 
-# Create app directory and set ownership
+# Create necessary directories
+RUN mkdir -p /app && \
+    chown -R 1001:1001 /app
+
 WORKDIR /app
-RUN chown -R appuser:appgroup /app
 
-# Copy the JAR file from builder stage
-COPY --from=builder --chown=appuser:appgroup /app/target/*.jar app.jar
+# Copy JAR with proper ownership
+COPY --from=builder --chown=1001:1001 /app/target/*.jar app.jar
 
-# Switch to non-root user
-USER appuser
+# Switch to non-root user using numeric ID
+USER 1001:1001
 
-# Expose port
 EXPOSE 8080
 
-# Add health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
-
-# Run the application with JVM optimizations
+# Optimized JVM settings for containers
 ENTRYPOINT ["java", \
+    "-server", \
     "-XX:+UseContainerSupport", \
     "-XX:MaxRAMPercentage=75.0", \
     "-XX:+UseG1GC", \
-    "-XX:+UseStringDeduplication", \
+    "-XX:+UnlockExperimentalVMOptions", \
+    "-XX:+UseCGroupMemoryLimitForHeap", \
     "-Djava.security.egd=file:/dev/./urandom", \
     "-jar", "app.jar"]
 
