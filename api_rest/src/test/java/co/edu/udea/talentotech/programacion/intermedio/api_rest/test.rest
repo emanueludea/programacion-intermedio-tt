@@ -16,8 +16,8 @@ POST {{BASE_URL}}/api/users
 Content-Type: application/json
 
 {
-  "username": "nuevo_admin",
-  "userPassword": "password123",
+  "username": "admin",
+  "userPassword": "1234",
   "isAdmin": true
 }
 ### Autenticar usuario
