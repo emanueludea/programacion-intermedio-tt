@@ -18,37 +18,20 @@ COPY src ./src
 RUN ./mvnw clean package -DskipTests
 
 # =========================================
-# Production stage with numeric user
+# Distroless production stage
 # =========================================
-FROM alpine/java:21-jre
-
-# Create non-root user with specific UID/GID
-RUN addgroup -g 1001 appgroup && \
-    adduser -u 1001 -G appgroup -s /bin/sh -D appuser
-
-# Create necessary directories
-RUN mkdir -p /app && \
-    chown -R 1001:1001 /app
+FROM gcr.io/distroless/java21-debian12:nonroot
 
 WORKDIR /app
 
-# Copy JAR with proper ownership
-COPY --from=builder --chown=1001:1001 /app/target/*.jar app.jar
-
-# Switch to non-root user using numeric ID
-USER 1001:1001
+# Copy JAR file (distroless already has nonroot user)
+COPY --from=builder --chown=nonroot:nonroot /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-# Optimized JVM settings for containers
 ENTRYPOINT ["java", \
-    "-server", \
     "-XX:+UseContainerSupport", \
     "-XX:MaxRAMPercentage=75.0", \
-    "-XX:+UseG1GC", \
-    "-XX:+UnlockExperimentalVMOptions", \
-    "-XX:+UseCGroupMemoryLimitForHeap", \
-    "-Djava.security.egd=file:/dev/./urandom", \
     "-jar", "app.jar"]
 
 # Use the following commands:
